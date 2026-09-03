@@ -49,11 +49,15 @@ int main(){
 	    Vector2 p3 = points.items[(i+2)%points.count];
 
 	    for (float t = 0.0 ; t <= 1; t += 0.05){
-		Vector2 position = Lerp(
-		    Lerp(p1, p2, t), Lerp(p2, p3, t), t
-		);
+
+		// below looks messy because I'm expanding the nested Lerp() functions
+		// into one line, making it way faster to calculate the intersection point
+		float B_x = (p3.x-2*p2.x+p1.x)*t*t + 2*t*(p2.x-p1.x)+p1.x;
+		float B_y = (p3.y-2*p2.y+p1.y)*t*t + 2*t*(p2.y-p1.y)+p1.y;
+		
+		Vector2 bezier_point_position = {B_x, B_y};
 		Vector2 size = {10,10};
-		DrawRectangleV(position, size, YELLOW);
+		DrawRectangleV(bezier_point_position, size, YELLOW);
 	    }
 	}
 	EndDrawing();
